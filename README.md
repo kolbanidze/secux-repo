@@ -1,5 +1,7 @@
 # Secux Linux Package Repository 📦🐧
 
+[![Russian](https://img.shields.io/badge/README-in_Russian-red.svg)](README.ru.md)
+
 Welcome to the official Pacman package repository for **Secux Linux**! 🎉
 
 Secux Linux is a secure Linux distribution 🛡️ based on the powerful and flexible Arch Linux foundation. Our primary focus is enhancing security and providing a robust environment for security-conscious users.
