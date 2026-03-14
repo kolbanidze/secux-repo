@@ -1,0 +1,45 @@
+# /etc/systemd/system/mirror-sync.service
+[Unit]
+Description=Secux Linux mirror sync
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=server
+Group=server
+
+ExecStart=/usr/bin/python3 /home/server/secux_sync.py
+
+ProtectSystem=strict
+ReadWritePaths=/srv/arch-mirror
+ProtectHome=read-only
+PrivateTmp=true
+
+PrivateDevices=yes
+DeviceAllow=
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectControlGroups=yes
+
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+IPAccounting=yes
+
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+SystemCallArchitectures=native
+MemoryDenyWriteExecute=yes
+
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RemoveIPC=yes
+ProtectProc=invisible
+ProcSubset=pid

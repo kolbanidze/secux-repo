@@ -1,0 +1,51 @@
+# /etc/systemd/system/loophole.service
+[Unit]
+Description=Loophole Tunnel for Secux Linux Repository
+Documentation=https://loophole.cloud/docs
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=server
+Group=server
+WorkingDirectory=/home/server
+ExecStart=/home/server/loophole http 80 --hostname secuxlinuxrepo
+
+Restart=on-failure
+RestartSec=5
+tartLimitBurst=5
+
+ProtectSystem=strict
+ProtectHome=tmpfs
+BindReadOnlyPaths=/home/server/loophole   # путь до бинарника
+BindPaths=/home/server/.loophole          # путь до папки с конфигурацией loophole
+PrivateTmp=true
+PrivateDevices=yes
+NoNewPrivileges=yes
+
+AmbientCapabilities=
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6
+IPAccounting=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectHostname=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+RemoveIPC=yes
+SystemCallFilter=@system-service
+SystemCallFilter=~@resources @privileged
+SystemCallArchitectures=native
+ProtectProc=invisible
+ProcSubset=pid
+DeviceAllow=
+
+[Install]
+WantedBy=multi-user.target
