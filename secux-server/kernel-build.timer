@@ -1,0 +1,11 @@
+# /etc/systemd/system/kernel-build.timer
+[Unit]
+Description=Run Secux Kernel Builder
+
+[Timer]
+OnCalendar=Thu *-*-* 09:00:00
+Persistent=true
+RandomizedDelaySec=10m
+
+[Install]
+WantedBy=timers.target

@@ -1,21 +1,25 @@
-# /etc/systemd/system/mirror-sync.service
+# /etc/systemd/system/orchestrator.service
 [Unit]
-Description=Secux Linux mirror sync
+Description=Secux Linux Orchestrator
 After=network-online.target
 Wants=network-online.target
 
 [Service]
-Type=oneshot
+Type=simple
 User=server
 Group=server
-ExecStartPre=+/usr/bin/pacman-key --updatedb
-ExecStart=/usr/bin/python3 /home/server/secux_sync.py
+ExecStart=/usr/bin/python3 /home/server/orchestrator.py
 
 ProtectSystem=strict
 ReadWritePaths=/srv/arch-mirror
+ReadWritePaths=/home/server/git-creds
 ProtectHome=tmpfs
 BindPaths=/home/server/.gnupg
-BindPaths=/home/server/secux_sync.py
+BindPaths=/home/server/orchestrator.py
+BindPaths=/home/server/incoming
+BindPaths=/home/server/hf-repo
+BindPaths=/home/server/.gitconfig
+BindPaths=/home/server/git-creds
 PrivateTmp=true
 
 PrivateDevices=yes
@@ -45,3 +49,6 @@ RestrictRealtime=yes
 RemoveIPC=yes
 ProtectProc=invisible
 ProcSubset=pid
+
+[Install]
+WantedBy=multi-user.target

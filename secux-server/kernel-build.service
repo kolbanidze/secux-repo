@@ -1,0 +1,51 @@
+# /etc/systemd/system/kernel-build.service
+[Unit]
+Description=Secux Linux Kernel Builder
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=server
+Group=server
+WorkingDirectory=/home/server/linux-secux
+ExecStart=/usr/bin/python3 /home/server/linux-secux/updater.py
+
+Environment="HOME=/home/server"
+Environment="USER=server"
+
+ProtectSystem=strict
+ProtectHome=tmpfs
+
+BindPaths=/home/server/linux-secux
+BindPaths=/home/server/incoming
+BindPaths=/home/server/.gnupg
+BindPaths=/home/server/.cache
+BindPaths=/home/server/.gitconfig
+BindPaths=/home/server/git-creds
+
+BindReadOnlyPaths=-/home/server/.gitconfig
+BindReadOnlyPaths=-/home/server/.config/git
+BindReadOnlyPaths=-/home/server/.makepkg.conf
+BindReadOnlyPaths=-/home/server/.config/pacman/makepkg.conf
+
+PrivateTmp=true
+PrivateDevices=yes
+DeviceAllow=
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectControlGroups=yes
+
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+IPAccounting=yes
+
+RestrictNamespaces=yes
+RestrictRealtime=yes
